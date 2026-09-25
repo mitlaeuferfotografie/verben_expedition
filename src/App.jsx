@@ -5,7 +5,11 @@ import { Sparkles, Search, Box, Compass, Map, Award, Star, ArrowRight, RotateCcw
 // CUSTOM CSS FÜR DSCHUNGEL THEMEN & ANIMATIONEN
 // ==========================================
 const jungleStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+  /* Schrift wird mit der App ausgeliefert (public/fonts, SIL Open Font License 1.1) – keine Verbindung zu Google. */
+  @font-face { font-family: 'Fredoka'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/fredoka-latin-400-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'Fredoka'; font-style: normal; font-weight: 500; font-display: swap; src: url('fonts/fredoka-latin-500-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'Fredoka'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/fredoka-latin-600-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'Fredoka'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/fredoka-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
   @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -1706,6 +1710,76 @@ function SpecialVerbsGame({ onFinish, onShowTip }) {
 // ==========================================
 // HAUPT-APP (Menü-Steuerung)
 // ==========================================
+// ==========================================
+// IMPRESSUM & DATENSCHUTZ
+// ==========================================
+// Der gesamte Rechtstext steht in dieser einen Komponente (gleicher Text wie in den Schwester-Apps).
+// Erreichbar ohne Passwort über die Fußzeile im Menü und über den Link im Lehrer-Bereich (Zahnrad).
+// section = 'datenschutz' springt beim Öffnen direkt zum Abschnitt „Datenschutz“.
+const IMPRESSUM_EMAIL = 'p.brandsch@ggs-roesrath.de';
+const GITHUB_PRIVACY_URL = 'https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement';
+
+function ImpressumModal({ onClose, section }) {
+  const datenschutzRef = useRef(null);
+  useEffect(() => {
+    if (section === 'datenschutz' && datenschutzRef.current) datenschutzRef.current.scrollIntoView({ block: 'start' });
+  }, [section]);
+
+  const Mail = () => <a href={`mailto:${IMPRESSUM_EMAIL}`} className="text-cyan-300 underline underline-offset-2 hover:text-cyan-200 break-all">{IMPRESSUM_EMAIL}</a>;
+  const H2 = ({ children, innerRef }) => <h4 ref={innerRef} className="text-xl font-bold text-yellow-200 mt-6 mb-2 scroll-mt-2">{children}</h4>;
+  const H3 = ({ children }) => <h5 className="font-bold text-slate-100 mt-4 mb-1">{children}</h5>;
+
+  return (
+    <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[250] flex items-center justify-center p-4">
+      <div className="bg-slate-900 border-4 border-slate-500 rounded-3xl max-w-2xl w-full shadow-[0_0_40px_rgba(148,163,184,0.25)] relative flex flex-col max-h-[85vh]">
+        <div className="flex justify-between items-start gap-4 p-5 md:p-6 pb-3 border-b-2 border-slate-800">
+          <div className="text-left">
+            <h3 className="text-2xl md:text-3xl font-bold text-white">Impressum &amp; Datenschutz</h3>
+            <p className="text-slate-400 italic">Infos für Erwachsene</p>
+          </div>
+          <button onClick={onClose} className="text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-full p-2 transition-colors flex-shrink-0">✕</button>
+        </div>
+
+        <div className="overflow-y-auto px-5 md:px-6 pb-6 text-left text-slate-300 leading-relaxed">
+          <H2>Impressum</H2>
+          <p>Angaben gemäß § 18 Abs. 1 Medienstaatsvertrag (MStV)</p>
+          <p className="mt-3">Peter Brandsch<br />Sandweg 13<br />51503 Rösrath</p>
+          <p className="mt-3">E-Mail: <Mail /></p>
+          <p className="mt-3">Die große Verben-Expedition ist ein kostenloses Lernangebot ohne Werbung.</p>
+
+          <H3>Haftung für Inhalte</H3>
+          <p>Die Inhalte dieser App wurden mit großer Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch keine Gewähr übernehmen. Hinweise auf Fehler nehme ich gern per E-Mail entgegen.</p>
+
+          <H3>Urheberrecht und Lizenzen</H3>
+          <p>
+            Texte, Aufgaben, Figuren und Gestaltung der App: © 2026 Peter Brandsch.<br />
+            Verwendete Bausteine anderer Urheber:<br />
+            – Schriftart „Fredoka“: SIL Open Font License 1.1<br />
+            – Symbole: Lucide (ISC-Lizenz)<br />
+            – React (MIT-Lizenz), Tailwind CSS (MIT-Lizenz)
+          </p>
+
+          <H2 innerRef={datenschutzRef}>Datenschutz</H2>
+
+          <H3>1. Verantwortlich</H3>
+          <p>Peter Brandsch, Sandweg 13, 51503 Rösrath, E-Mail: <Mail /></p>
+
+          <H3>2. Das Wichtigste in Kürze</H3>
+          <p>Die App funktioniert ohne Anmeldung und ohne Namen. Sie setzt keine Cookies, speichert nichts im Browser und verwendet keine Analyse-, Werbe- oder Trackingdienste. Der Spielstand besteht nur, solange die Seite geöffnet ist. Der Dschungel-Code wird ausschließlich auf dem Gerät angezeigt und eingegeben. Er wird nicht an mich oder an Dritte übertragen. Schriften und Gestaltungsdateien werden direkt mit der App ausgeliefert, es werden keine Verbindungen zu Google oder anderen Drittanbietern aufgebaut.</p>
+
+          <H3>3. Bereitstellung über GitHub Pages</H3>
+          <p>Die App wird über GitHub Pages bereitgestellt, einen Dienst der GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Beim Aufruf der App verarbeitet GitHub technisch notwendige Daten, insbesondere die IP-Adresse, Datum und Uhrzeit des Abrufs sowie Angaben zum verwendeten Browser. Dies ist erforderlich, um die Seite auszuliefern und ihre Sicherheit zu gewährleisten. Dabei können Daten in die USA übermittelt werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Mein berechtigtes Interesse liegt in einer sicheren und zuverlässigen Bereitstellung der App. Ich selbst erhalte keine Zugriffsdaten und werte keine aus. Weitere Informationen: Datenschutzerklärung von GitHub (<a href={GITHUB_PRIVACY_URL} target="_blank" rel="noopener noreferrer" className="text-cyan-300 underline underline-offset-2 hover:text-cyan-200 break-all">{GITHUB_PRIVACY_URL}</a>).</p>
+
+          <H3>4. Deine Rechte</H3>
+          <p>Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) und Widerspruch (Art. 21). Wende dich dazu an die oben genannte E-Mail-Adresse. Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren, in Nordrhein-Westfalen bei der Landesbeauftragten für Datenschutz und Informationsfreiheit NRW (LDI NRW).</p>
+
+          <p className="mt-6 text-slate-400">Stand: September 2026</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [gameState, setGameState] = useState('menu'); 
   const [activeGame, setActiveGame] = useState(null);
@@ -1718,6 +1792,7 @@ export default function App() {
   const [showAdminAuth, setShowAdminAuth] = useState(false);
   const [showAdminControl, setShowAdminControl] = useState(false);
   const [tipMessage, setTipMessage] = useState(null);
+  const [impressum, setImpressum] = useState(null); // null | 'impressum' | 'datenschutz'
 
   const [globalScore, setGlobalScore] = useState(0);
   const [gameProgress, setGameProgress] = useState({});
@@ -1836,6 +1911,7 @@ export default function App() {
             className={`w-full bg-stone-950 border-2 rounded-xl p-4 text-white text-center text-xl mb-4 outline-none transition-colors ${error ? 'border-red-500 anim-shake' : 'border-stone-700 focus:border-emerald-500'}`} 
           />
           <button onClick={handleLogin} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition-all">Einloggen</button>
+          <button onClick={() => { setShowAdminAuth(false); setImpressum('impressum'); }} className="mt-5 text-xs text-stone-500 hover:text-stone-300 underline underline-offset-2 transition-colors">Impressum &amp; Datenschutz</button>
         </div>
       </div>
     );
@@ -1867,6 +1943,7 @@ export default function App() {
       {showSaveModal && <SaveLoadModalInner />}
       {showTreasureModal && <TreasureModal onClose={() => setShowTreasureModal(false)} gameProgress={gameProgress} />}
       {showAdminAuth && <AdminAuthModalInner />}
+      {impressum && <ImpressumModal section={impressum} onClose={() => setImpressum(null)} />}
       {showAdminControl && (
         <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[200] flex items-center justify-center p-4">
           <div className="bg-stone-900 border-4 border-stone-600 p-8 rounded-3xl max-w-sm w-full text-center anim-pop relative">
@@ -1973,6 +2050,13 @@ export default function App() {
               </div>
             </div>
           </div>
+
+          {/* Fußzeile: Impressum & Datenschutz (ohne Passwort erreichbar) */}
+          <footer className="mt-10 text-center text-xs sm:text-sm text-stone-500">
+            <button onClick={() => setImpressum('impressum')} className="hover:text-stone-300 hover:underline underline-offset-2 transition-colors">Impressum</button>
+            <span className="mx-2" aria-hidden="true">·</span>
+            <button onClick={() => setImpressum('datenschutz')} className="hover:text-stone-300 hover:underline underline-offset-2 transition-colors">Datenschutz</button>
+          </footer>
         </div>
       )}
 
